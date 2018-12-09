@@ -6,17 +6,24 @@ class SelectUtility extends React.Component{
         bookId:PropTypes.string.isRequired,
         handleBookChange:PropTypes.func.isRequired
     }
+    state={
+        value:'none'
+    }
+    handleChange=(e)=>{
+        let val=e.target.value;
+        this.setState({value:val})
+        this.props.handleBookChange(val);
+    }
     
     render(){
         return (
             
-                <select onChange={(e)=>{let val=e.target.value;
-                                        this.props.handleBookChange(val);}}>
-                <option value="move">Move to...</option>
+                <select value={this.state.value} onChange={(e)=>{this.handleChange(e)}}>
+                <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
                 <option value="read">Read</option>
-                <option value="none" defaultValue>None</option>
+                <option value="none">None</option>
                 </select>
                   
         )

@@ -5,7 +5,9 @@ This is a React App that uses Udacity's Book API and then maintains a collection
 * Want to Read
 * Read
 
-A user can change the book states depending of their state of the book. New books can also be added to the collection by navigationg to `/search` or by clicking on the *Plus* Icon
+A user can change the book states depending of their state of the book. New books can also be added to the collection by navigationg to `/search` or by clicking on the *Plus* Icon.
+
+To initiate a search you need to hit `enter` after entering you query
 
 ## TL;DR
 

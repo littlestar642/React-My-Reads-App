@@ -54,9 +54,10 @@ class BookSearch extends React.Component{
                   https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
+                  you don't find a specific author or title. Every search is limited by seam,;"
+                  4567i..237".rch terms.
                 */}
-                <input type="text" value={this.state.query} onChange={this.handleChange} placeholder="Search by title or author"/>
+                <input type="text" value={this.state.query} onChange={this.handleChange} placeholder="Press Enter to search by Title"/>
 
               </div>
             </div>
