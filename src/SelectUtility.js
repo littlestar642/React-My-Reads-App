@@ -7,7 +7,7 @@ class SelectUtility extends React.Component{
         handleBookChange:PropTypes.func.isRequired
     }
     state={
-        value:'none'
+        value:this.props.bookShelf
     }
     handleChange=(e)=>{
         let val=e.target.value;

@@ -1,36 +1,48 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Books from './Books';
-import {search, getAll} from './BooksAPI';
-let storage=window.localStorage;
+import {search} from './BooksAPI';
+
 class BookSearch extends React.Component{
 
 
     state={
-      query:''
+      query:'',
+      newBooks:[],
     }
     handleChange=(e)=>{
       let val=e.target.value;
-      e.target.onkeyup=(event)=>{
-        if(event.keyCode===13){
-          search(val).then((books)=>{
-            storage.setItem('searchBooks',JSON.stringify(books));
-            this.props.getBooks(books)
-          })
-        }
-      }
-      
+      search(val).then((books)=>{
+        this.setState({newBooks:books});
+      })
       this.setState({
         query:e.target.value
       })
     }
     handleUpdate=(book,val)=>{
         this.props.changeBookShelfHandle(book,val);
-        getAll().then((books)=>this.props.getBooks(books))
     }
     handleResult=()=>{
-      if(!this.props.books.error){
-        return this.props.books.filter((book)=>{
+      let finalBooks=[];
+      let oldArr=this.props.books;
+      let newArr=this.state.newBooks;
+      if(this.state.newBooks && !this.state.newBooks.error){
+        for(let x of newArr){
+          let found=0;
+          for(var j=0;j<oldArr.length;j++){
+            if(x.id===oldArr[j]['id']){
+              finalBooks.push(oldArr[j]);
+              found=1;
+              break;
+            }
+          }
+          if(found)continue;
+          finalBooks.push(x);
+    }
+      }
+          if(this.state.newBooks && !this.state.newBooks.error){
+        return finalBooks.filter((book)=>{
+          if(!book.shelf)book.shelf='none';
           return book.title.toLowerCase().includes(this.state.query) && this.state.query!==''
         })  
       }
@@ -48,24 +60,14 @@ class BookSearch extends React.Component{
               <button className="close-search">Close</button>
               </Link>
               <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by seam,;"
-                  4567i..237".rch terms.
-                */}
                 <input type="text" value={this.state.query} onChange={this.handleChange} placeholder="Press Enter to search by Title"/>
-
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-                <Books books={this.handleResult()} changeBookShelf={(book,val)=>{this.handleUpdate(book,val)}}/>
+                <Books books={this.handleResult()}  changeBookShelf={(book,val)=>{this.handleUpdate(book,val)}}/>
               </ol>
-              {this.props.books.error && (<div>Wrong Search</div>)}
+              {this.state.newBooks && this.state.newBooks.error && (<div>Wrong Search. Please Re-enter</div>)}
             </div>
 
           </div>

@@ -15,9 +15,9 @@ class Books extends React.Component{
                return (<li key={book.id}>
                 <div className="book">
                     <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks.thumbnail||''}")` }}></div>
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks && book.imageLinks.thumbnail}")` }}></div>
                     <div className="book-shelf-changer">
-                        <SelectUtilty bookId={book.id} handleBookChange={(val)=>{this.props.changeBookShelf(book,val)}}/>
+                        <SelectUtilty bookId={book.id} bookShelf={book.shelf} handleBookChange={(val)=>{this.props.changeBookShelf(book,val)}}/>
                     </div>
                     </div>
                     <div className="book-title">{book.title}</div>

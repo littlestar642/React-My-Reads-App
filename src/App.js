@@ -10,13 +10,7 @@ let storage=window.localStorage;
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    books:[]
+    books:[],
   }
   
 
@@ -26,7 +20,6 @@ class BooksApp extends React.Component {
     this.setState({books:JSON.parse(booksArr)});
     }
     getAll().then((books)=>{
-      console.log(books);
       storage.setItem('books',JSON.stringify(books));
       this.setState({books})
     })
@@ -35,7 +28,12 @@ class BooksApp extends React.Component {
   changeBook=(book,val)=>{
     update(book,val)
     this.setState((state)=>{
+
       let update=state.books.filter((boo)=>boo.id===book.id)
+      if(update.length===0){
+        state.books.push(book);
+        return {books:state.books}
+      }
       update[0].shelf=val;
       let old=state.books.filter(boo=>boo.id!==book.id)
       update=update.concat(old)
@@ -48,7 +46,8 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route path='/search' render={()=>(
-        <BookSearch books={this.state.books} changeBookShelfHandle={this.changeBook}  getBooks={(books)=>{this.setState({books})}}/>
+        
+        <BookSearch books={this.state.books}  changeBookShelfHandle={this.changeBook} />
         )}/>
         <Route exact path='/' render={()=>(
           <div className="list-books">
